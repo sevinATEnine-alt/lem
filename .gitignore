@@ -1,0 +1,4 @@
+*.o
+manager/lem
+tests/*
+.vscode/*
