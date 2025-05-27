@@ -12,6 +12,7 @@
 #include <utility> 
 #include <filesystem>
 
+namespace fs = std::filesystem;
 
 using namespace std;
 
@@ -26,17 +27,21 @@ void usage() {
 }
 
 int main(int argc, char *argv[]) {
+    createOptDir();
     if (argc == 3) {
         if (!strcmp(argv[1],"install")) {
         
             string packageName(argv[2]);
+            
+            cout << "Finding package." << endl;
 
-            if (!package_exists(packageName)) {
-                cout << "The package " << packageName << " does not exist." << endl;
+            auto [statusCodeRecv, packageToml] = get_package(packageName);
+
+            if (statusCodeRecv < 200 && statusCodeRecv >= 300) {
+                cerr << "The package " << packageName << " does not exist." << endl;
                 exit(4);
             };
 
-            string packageToml = get_package(packageName);
 
             try {
                 auto tbl = toml::parse(packageToml);
@@ -45,11 +50,11 @@ int main(int argc, char *argv[]) {
                 auto version = tbl["package"]["version"].value_or("");
 
                 if (name == "") {
-                    cout << "Error: package.name not found." << endl;
+                    cerr << "Error: package.name not found." << endl;
                     exit(1);
                 }
                 if (version == "") {
-                    cout << "Error: package.version not found." << endl;
+                    cerr << "Error: package.version not found." << endl;
                     exit(2);
                 }
 
@@ -71,16 +76,45 @@ int main(int argc, char *argv[]) {
                     // TODO: IMPLIMENT PRE-BUILT EXECUTABLE
 
                 } else {
-                    cout << "No pre-built executable found. Compiling from source.";
+                    cout << "No pre-built executable found. Compiling from source." << endl;
                     
                     auto url = tbl["targets"]["source"]["url"].value<string>();
+
+                    auto expectedHash = tbl["targets"]["source"]["sha256"].value<string>();
+
                     if (!url) {
-                        cout << "Error: targets.source.url not found." << endl;
+                        cerr << "Error: targets.source.url not found." << endl;
                         exit(5);
                     }
-                    cout << url.value_or("") << endl;
+
+                    if (!expectedHash) {
+                        cerr << "Error: targets.source.sha256 not found." << endl;
+                        exit(10);
+                    }
+                    cout << "Downloading package" << endl;
+
                     auto [statusCode, data] = http_request(url.value_or(""));
-                    cout << statusCode << " " << data << endl;
+                    if (!fs::exists("/opt/lem/temp")) {
+                        fs::create_directories("/opt/lem/temp");
+                    }
+
+                    cout << "Finished downloading. Calculating hashes." << endl;
+
+                    if (expectedHash == sha256_string(data)) {
+                        cout << "Hashes match. Installing." << endl;
+                    } else {
+                        cerr << "Hashes do not match!" << endl;
+                        cerr << "Expected hash: '" << expectedHash.value_or("") << "' Real hash: '" << sha256_string(data) << "'.";
+                        exit(11);
+                    }
+
+                    cout << "Unarchiving package" << endl;
+
+                    clear_folder("/opt/lem/temp");
+                    
+                    extract_tar_gz_from_string(data, "/opt/lem/temp");
+
+                    cout << "Building package" << endl;
                 }
             } catch (const toml::parse_error& err) {
                 cerr << "TOML parse error: " << err.description()
@@ -96,4 +130,5 @@ int main(int argc, char *argv[]) {
         usage();
         exit(3);
     }
+    return 0;
 }
