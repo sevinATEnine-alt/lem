@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "sstream": "cpp",
+        "ostream": "cpp",
+        "stdexcept": "cpp",
+        "optional": "cpp",
+        "iomanip": "cpp",
+        "cstdlib": "cpp"
+    }
+}
