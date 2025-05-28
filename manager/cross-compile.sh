@@ -11,7 +11,7 @@ docker buildx build \
   -o type=local,dest=output \
   .
 
-if [ `uname -s` == "Darwin" ]; then
+if [ `uname -s` == "Darwin" ] && [`uname -m` == "arm64"]; then
     echo "[*] Building MacOS distros"
 
     mkdir output/macos
@@ -19,5 +19,3 @@ if [ `uname -s` == "Darwin" ]; then
 else
     echo "[X] Can only make MacOS distribution on a Darwin (mac) machnine."
 fi
-
-
