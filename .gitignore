@@ -2,3 +2,6 @@
 manager/lem
 tests/*
 .vscode/*
+manager/lem
+manager/objects/utils.o
+manager/objects/utils.o
