@@ -110,11 +110,27 @@ int main(int argc, char *argv[]) {
 
                     cout << "Unarchiving package" << endl;
 
+                    // TODO: Put in correct directory
+
                     clear_folder("/opt/lem/temp");
                     
                     extract_tar_gz_from_string(data, "/opt/lem/temp");
 
                     cout << "Building package" << endl;
+
+                    auto buildCommand = tbl["targets"]["source"]["build"].value<string>();
+
+                    if (!buildCommand) {
+                        cerr << "Error: targets.source.build not found." << endl;
+                        exit(12);
+                    }
+
+                    int buildCommandSystem = system(buildCommand.value_or("").c_str());
+
+                    if (buildCommandSystem != 0) {
+                        cerr << "Failed to build!";
+                        exit(11);
+                    }
                 }
             } catch (const toml::parse_error& err) {
                 cerr << "TOML parse error: " << err.description()
