@@ -1,0 +1,47 @@
+TARGET_ARCH ?= universal
+ARCH = $(shell uname -s)
+
+SRC_DIR = src
+OBJ_DIR = objects
+BINDIR = output/macos
+TARGET_NAME = lem
+SRC = $(wildcard $(SRC_DIR)/*.cpp)
+
+# Architecture-specific compiler flags
+CXX = clang++
+COMMON_CXXFLAGS = -std=c++17 -I./toml
+COMMON_LIBS = -lssl -lcrypto -lcurl -larchive
+
+ARM64_CXXFLAGS = $(COMMON_CXXFLAGS) -I/opt/homebrew/opt/openssl@3/include -I/opt/homebrew/opt/libarchive/include -I/opt/homebrew/opt/curl/include
+ARM64_LDFLAGS  = -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/libarchive/lib -L/opt/homebrew/opt/curl/lib $(COMMON_LIBS)
+
+X86_64_CXXFLAGS = $(COMMON_CXXFLAGS) -I/usr/local/include/openssl/ -I/usr/local/opt/libarchive/include -I/usr/local/opt/curl/include
+X86_64_LDFLAGS  = -L/usr/local/opt/openssl@3/lib -L/usr/local/opt/libarchive/lib -L/usr/local/opt/curl/lib $(COMMON_LIBS)
+
+# Build targets
+TARGET_UNI = $(BINDIR)/$(TARGET_NAME)
+TARGET_ARM = $(BINDIR)/$(TARGET_NAME).arm64
+TARGET_X86 = $(BINDIR)/$(TARGET_NAME).x86_64
+
+all: $(TARGET_UNI)
+
+# Universal binary
+$(TARGET_UNI): $(TARGET_ARM) $(TARGET_X86)
+	@echo "[LIPO] Creating universal binary..."
+	@mkdir -p $(BINDIR)
+	@lipo -create -output $@ $^
+
+# ARM64 build
+$(TARGET_ARM): $(SRC)
+	@echo "[BUILD] Compiling for arm64..."
+	@mkdir -p $(OBJ_DIR)
+	$(CXX) $(ARM64_CXXFLAGS) -target arm64-apple-macos11 $^ -o $@ $(ARM64_LDFLAGS)
+
+# x86_64 build
+$(TARGET_X86): $(SRC)
+	@echo "[BUILD] Compiling for x86_64..."
+	@mkdir -p $(OBJ_DIR)
+	$(CXX) $(X86_64_CXXFLAGS) -target x86_64-apple-macos10.15 $^ -o $@ $(X86_64_LDFLAGS)
+
+clean:
+	rm -rfv $(OBJ_DIR)/* $(BINDIR)/*

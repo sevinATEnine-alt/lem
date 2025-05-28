@@ -2,6 +2,7 @@
 manager/lem
 tests/*
 .vscode/*
-manager/lem
-manager/objects/utils.o
-manager/objects/utils.o
+manager/output/*
+manager/objects/*.o
+objects/*
+.DS_Store

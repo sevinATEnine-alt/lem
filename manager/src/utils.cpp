@@ -16,6 +16,9 @@
 #include <errno.h>
 #include <string.h>
 #include <filesystem>
+#include <algorithm>
+#include <cctype>
+
 
 namespace fs = std::filesystem;
 
