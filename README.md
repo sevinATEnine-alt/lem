@@ -1,8 +1,6 @@
+# *** WIP ***
+
 # LEM
-
-#WIP!!!!!
-
-
 
 Linux Executable Manager, also know as LEM, is a powerful diverse package manager.
 LEM is primarily made for Linux, but is supported by MacOS and other systems.
@@ -21,23 +19,41 @@ LEM is primarily made for Linux, but is supported by MacOS and other systems.
 - [Table Of Contents](#table-of-contents)
 - [Install](#install)
   * [Linux](#linux)
-  * [Mac](#mac)
+  * [MacOS](#macos)
   * [From source](#from-source)
-- [Installing packages](#installing-packages)
-- [Creating packages](#creating-packages)
+- [Installing LEM packages](#installing-lem-packages)
+- [Creating LEM packages](#creating-lem-packages)
+- [LEM commands](#lem-commands)
 
 # Install
 
-All installations are available in the releases section of the github repository.
+All installations are available in the releases section of the github repository. Alternativley, brew and apt packages are available.
 
 ## Linux
 
+Go to the releases section and select the latest version. Then click download the Linux version.
 
-## Mac
+### OR
+
+Install with apt:
+```bash
+sudo apt install lem
+```
+
+## MacOS
+
+Go to the releases section and select the latest version. Then download the MacOS version.
+
+### OR
+
+Install with brew:
+```bash
+sudo brew install lem
+```
 
 ## From source
 
-1. Install libraries
+### Install libraries:
 
 Linux:
 ```bash
@@ -45,15 +61,21 @@ sudo apt install libssl-dev curl libarchive-dev
 ```
 
 MacOS:
+```bash
+brew install openssl libarchive curl 
+```
 
+### Clone the repository:
 
-2. Clone the repository
 ```bash
 git clone https://github.com/sevinATEnine-alt/lem.git
 cd lem
-
+make
+make install
 ```
 
-# Installing packages
+# LEM commands
 
-# Creating packages
+# Installing LEM packages
+
+# Creating LEM packages
