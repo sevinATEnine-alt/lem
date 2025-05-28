@@ -35,6 +35,8 @@ Go to the releases section and select the latest version. Then click download th
 
 ### OR
 
+**NOT WORKING YET!!!!!**
+
 Install with apt:
 ```bash
 sudo apt install lem
@@ -47,6 +49,9 @@ Go to the releases section and select the latest version. Then download the MacO
 ### OR
 
 Install with brew:
+
+**NOT WORKING YET!!!!!**
+
 ```bash
 sudo brew install lem
 ```
@@ -56,24 +61,84 @@ sudo brew install lem
 ### Install libraries:
 
 Linux:
+
 ```bash
-sudo apt install libssl-dev curl libarchive-dev
+sudo apt install libssl-dev curl libarchive-dev make
 ```
 
 MacOS:
+
 ```bash
-brew install openssl libarchive curl 
+brew install openssl libarchive curl make 
 ```
 
 ### Clone the repository:
 
 ```bash
+
 git clone https://github.com/sevinATEnine-alt/lem.git
-cd lem
+cd lem/manager
+```
+
+### Build and install
+
+```bash
 make
 make install
 ```
- 
+
+
+## Cross-compile from source
+
+### Install libraries:
+
+Linux:
+
+```bash
+sudo apt install libssl-dev curl libarchive-dev make
+```
+
+MacOS:
+
+```bash
+brew install openssl libarchive curl make
+```
+
+### Install Docker Desktop
+
+Go to [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/) and download for your operating system. Then run Docker Destop to start the daemon service.
+
+### Clone the repository:
+
+```bash
+
+git clone https://github.com/sevinATEnine-alt/lem.git
+cd lem/manager
+```
+
+### If cross compiling for MacOS:
+> NOTE: To cross-compile for MacOS, you must be on a arm64 proccessor running MacOS.
+
+#### Install x86_64 version of brew
+
+```bash
+arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+#### Install packages
+
+```bash
+arch -x86_64 /usr/local/bin/brew install openssl libarchive curl make
+```
+
+#### Cross-compile
+
+Make sure Docker is running.
+
+```bash
+./cross-compile.sh
+```
+
 # LEM commands
 
 # Installing LEM packages
