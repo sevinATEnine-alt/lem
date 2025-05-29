@@ -5,6 +5,8 @@
 Linux Executable Manager, also know as LEM, is a powerful diverse package manager.
 LEM is primarily made for Linux, but is supported by MacOS and other systems.
 
+Learn about how to use LEM at [lem.readthedocs.io](https://lem.readthedocs.io/en/latest/)
+
 | System      | Supported |
 | ----------- | :-------: |
 | Linux       | ✅        |
@@ -15,15 +17,26 @@ LEM is primarily made for Linux, but is supported by MacOS and other systems.
 | Windows     | ❌        |
 
 # Table Of Contents
+
+- [*** WIP ***](#----wip----)
 - [LEM](#lem)
 - [Table Of Contents](#table-of-contents)
 - [Install](#install)
   * [Linux](#linux)
   * [MacOS](#macos)
   * [From source](#from-source)
-- [Installing LEM packages](#installing-lem-packages)
-- [Creating LEM packages](#creating-lem-packages)
-- [LEM commands](#lem-commands)
+    + [Install libraries](#install-libraries)
+    + [Clone the repository](#clone-the-repository)
+    + [Build and install](#build-and-install)
+  * [Cross-compile from source](#cross-compile-from-source)
+    + [Install libraries](#install-libraries-1)
+    + [Install Docker Desktop](#install-docker-desktop)
+    + [Clone the repository](#clone-the-repository-1)
+    + [If cross compiling for MacOS](#if-cross-compiling-for-macos)
+      - [Install x86_64 version of brew](#install-x86_64-version-of-brew)
+      - [Install packages](#install-packages)
+      - [Cross-compile](#cross-compile)
+- [LEM docs](#lem-docs)
 
 # Install
 
@@ -58,7 +71,7 @@ sudo brew install lem
 
 ## From source
 
-### Install libraries:
+### Install libraries
 
 Linux:
 
@@ -72,7 +85,7 @@ MacOS:
 brew install openssl libarchive curl make 
 ```
 
-### Clone the repository:
+### Clone the repository
 
 ```bash
 
@@ -90,7 +103,7 @@ make install
 
 ## Cross-compile from source
 
-### Install libraries:
+### Install libraries
 
 Linux:
 
@@ -108,7 +121,7 @@ brew install openssl libarchive curl make
 
 Go to [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/) and download for your operating system. Then run Docker Destop to start the daemon service.
 
-### Clone the repository:
+### Clone the repository
 
 ```bash
 
@@ -116,7 +129,7 @@ git clone https://github.com/sevinATEnine-alt/lem.git
 cd lem/manager
 ```
 
-### If cross compiling for MacOS:
+### If cross compiling for MacOS
 > NOTE: To cross-compile for MacOS, you must be on a arm64 proccessor running MacOS.
 
 #### Install x86_64 version of brew
@@ -139,8 +152,6 @@ Make sure Docker is running.
 ./cross-compile.sh
 ```
 
-# LEM commands
+# LEM docs
 
-# Installing LEM packages
-
-# Creating LEM packages
+To learn more about lem and it's commands, go to [lem.readthedocs.io](https://lem.readthedocs.io/en/latest/).
